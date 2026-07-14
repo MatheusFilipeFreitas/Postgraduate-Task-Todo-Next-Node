@@ -2,10 +2,49 @@
 
 Full-stack task management application built for a postgraduate React course. The repository contains a **Node.js/Express REST API** backed by **PostgreSQL** and a **Next.js** web client for authentication and task management.
 
+## Screenshots
+
+The UI follows the system color scheme (`prefers-color-scheme`). Light screenshots are in [`docs/`](./docs/); dark mode variants are in [`docs/dark/`](./docs/dark/).
+
+### Light mode
+
+| Login | Sign up |
+|-------|---------|
+| ![Login screen](./docs/login.png) | ![Sign up screen](./docs/signup.png) |
+
+| Home dashboard | Tasks — Kanban board |
+|----------------|----------------------|
+| ![Home dashboard](./docs/home.png) | ![Tasks Kanban board](./docs/tasks-board.png) |
+
+| Tasks — List view |
+|-------------------|
+| ![Tasks list view](./docs/tasks-list.png) |
+
+### Dark mode
+
+| Login | Sign up |
+|-------|---------|
+| ![Login screen (dark)](./docs/dark/login.png) | ![Sign up screen (dark)](./docs/dark/signup.png) |
+
+| Home dashboard | Tasks — Kanban board |
+|----------------|----------------------|
+| ![Home dashboard (dark)](./docs/dark/home.png) | ![Tasks Kanban board (dark)](./docs/dark/tasks-board.png) |
+
+| Tasks — List view |
+|-------------------|
+| ![Tasks list view (dark)](./docs/dark/tasks-list.png) |
+
+Regenerate all screenshots (light + dark) with the app running locally:
+
+```bash
+node docs/capture-screenshots.mjs
+```
+
 ## Repository structure
 
 ```
 task-todo/
+├── docs/                   # App screenshots (light + dark/) and capture script
 ├── api/                    # Express + TypeScript REST API
 │   ├── docker/             # PostgreSQL via Docker Compose
 │   ├── migrations/         # node-pg-migrate schema files
