@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: task_todo
+      POSTGRES_USER: task_todo
+      POSTGRES_PASSWORD: task_todo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_todo -d task_todo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 3001
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET:-docker-local-secret-change-me-at-least-32-chars}
+      CORS_ORIGINS: http://localhost:3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: task_todo
+      DB_USER: task_todo
+      DB_PASSWORD: task_todo
+      DATABASE_URL: postgresql://task_todo:task_todo@db:5432/task_todo
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  client:
+    build:
+      context: ./client/todo-client
+      args:
+        NEXT_PUBLIC_API_URL: http://api:3001
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      # App is served over plain http://localhost, so the auth cookie must not be Secure
+      COOKIE_SECURE: "false"
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

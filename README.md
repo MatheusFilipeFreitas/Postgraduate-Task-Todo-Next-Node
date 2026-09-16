@@ -62,9 +62,30 @@ task-todo/
 
 ## Quick start
 
+### Docker (recommended)
+
+The only requirement is [Docker](https://docs.docker.com/get-docker/). No Node.js or package manager needed.
+
+```bash
+docker compose up --build
+```
+
+This starts PostgreSQL, runs migrations and seeds the database, then starts the API and the frontend:
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:3000 |
+| API | http://localhost:3001 |
+
+Seed user: `john@example.com` / `secret123`
+
+Stop with `docker compose down`, or `docker compose down -v` to also delete the database. Optionally set `JWT_SECRET` (at least 32 chars) in your shell or a root `.env` file.
+
+### Local development
+
 Run the API and frontend in separate terminals.
 
-### 1. API (`api/`)
+#### 1. API (`api/`)
 
 ```bash
 cd api
@@ -78,7 +99,7 @@ Seed user: `john@example.com` / `secret123`
 
 See [`api/README.md`](./api/README.md) for full API documentation, endpoints, migrations, Docker, and Postman usage.
 
-### 2. Frontend (`client/todo-client/`)
+#### 2. Frontend (`client/todo-client/`)
 
 ```bash
 cd client/todo-client
@@ -166,6 +187,8 @@ Next.js App Router application with a task dashboard, Kanban board, list view, a
 **Stack:** Next.js 16, React 19, TypeScript, Tailwind CSS 4.
 
 ## Requirements
+
+With Docker Compose, only Docker is required. For local development:
 
 - Node.js >= 18
 - Docker & Docker Compose (for PostgreSQL)
